@@ -36,14 +36,27 @@ const ShoeCard = ({
       <Wrapper>
         <ImageWrapper>
           <Image alt="" src={imageSrc} />
+          {variant === "new-release" && (
+            <JustReleased>Just released!</JustReleased>
+          )}
+          {variant === "on-sale" && <Sale>Sale</Sale>}
         </ImageWrapper>
         <Spacer size={12} />
         <Row>
           <Name>{name}</Name>
-          <Price>{formatPrice(price)}</Price>
+          <Price
+            style={{
+              "text-decoration": variant === "on-sale" ? "line-through" : "",
+            }}
+          >
+            {formatPrice(price)}
+          </Price>
         </Row>
         <Row>
           <ColorInfo>{pluralize("Color", numOfColors)}</ColorInfo>
+          {variant === "on-sale" && (
+            <SalePrice>{formatPrice(salePrice)}</SalePrice>
+          )}
         </Row>
       </Wrapper>
     </Link>
@@ -53,6 +66,26 @@ const ShoeCard = ({
 const Link = styled.a`
   text-decoration: none;
   color: inherit;
+`;
+
+const JustReleased = styled.div`
+  display: inline-block;
+  padding: 0.2rem 0.5rem;
+  background-color: blue;
+  color: white;
+  position: absolute;
+  right: -10px;
+  top: 10px;
+`;
+
+const Sale = styled.div`
+  background-color: red;
+  color: white;
+  display: inline-block;
+  padding: 0.2rem 0.5rem;
+  position: absolute;
+  top: 10px;
+  right: -10px;
 `;
 
 const Wrapper = styled.article``;
@@ -67,6 +100,8 @@ const Image = styled.img`
 
 const Row = styled.div`
   font-size: 1rem;
+  display: flex;
+  justify-content: space-between;
 `;
 
 const Name = styled.h3`
